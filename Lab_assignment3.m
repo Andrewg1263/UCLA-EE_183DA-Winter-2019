@@ -31,8 +31,8 @@ legend('Path','Input','Target');
 disp('2.3(d): Matlab code: Problem2_3d.m');
 
 %2.3(e)
-% p23e = (Problem2_3d(PiNot(),0.9,0));
-disp('Value of the trajectory(λ = 0.9) = -0.65611');
+value3e=Problem2_3d(PiNot(),0.9,0);
+disp(['the probability distribution specified by psa:',num2str(value3e(2,5,7)),'.']) 
 
 %2.3(f)
 disp('2.3(f):Matlab code: Problem2_3f.m');
@@ -41,46 +41,64 @@ disp('2.3(f):Matlab code: Problem2_3f.m');
 disp('2.3(g):Matlab code: Problem2_3g.m');
 
 %2.3(h)
-figure;
-pic2_3h = imread('2_3h2.jpg');
-imshow(pic2_3h);
-title('Problem2.3(h)');
-pic2_3hTrajectory = [1,4,6;1,3,5;1,2,4;2,2,3;3,2,2;4,2,1;4,3,0;4,4,11];
-disp('2.3(h): value of the robot described of input[1,4,6]: 2.5173');
+disp('2.3(h)')
+tic
+value3h=Problem2_3g(PiNot(),0.9,0);
+path3h=Problem2_3b(value3h,[1,4,6],0);%plot graph
 disp('Trajectory:');
-disp(pic2_3hTrajectory);
-
+disp(path3h)
+title('Problem2.3(h)');
+Values3h=Problem2_3d(value3h,0.9,0);
+disp(['the robot described in 2.3(c): ',num2str(Values3h(2,5,7)),'.'])
 
 %2.3(i)
-disp('2.3(i):1992.347975 second');
+disp('2.3(i)')
+toc
+
 
 %2.4(a)
 disp('2.4(a): Matlab code: Problem2_4a.m');
 
 %2.4(b)
-disp('2.4(b): different of Pi = 36; different of value = -3.7913e+03');
+disp('4(b)')
+tic
+[value4b1,value4b2]=Problem2_4a(0.9,0);
+path4b=Problem2_3b(value4b1,[1,4,6],0);%plot
+disp('Trajectory:');
+disp(path4b)
+title('Problem2.4(b)');
+disp('differnt in same policy:')
+diffP=432-sum(sum(sum(value3h==value4b1)))
+disp('differnt in same Values:')
+diffV=sum(sum(sum(Values3h-value4b2)))
 
 %2.4(c)
-disp('2.4(c): Elapsed time = 667.956089');
+disp('4(c)')
+toc
+
 
 %2.5(a)
-disp('2.5(a): ');
-clear all;
-disp('Trajectory:');
-disp(Problem2_3b(PiNot,[1,4,6],0.1));
-legend('Path','Input','Target');
+disp('2.5(a):')
+% tic
+value5a=Problem2_3g(PiNot(),0.9,0.1);
+path5a=GenTraj(value5a,[1,4,6],0.1);
+disp('Trajectory:')
+disp(path5a)
 title('Problem2.5(a)');
+Values5a=Problem2_3d(value5a,0.9,0.1);
+% toc
 
 %2.5(b)
 disp('2.5(b): ');
-clear all;
+
+value5b=Problem2_5b(PiNot(),0.9,0.25);
+path5b=Problem2_3b(value5b,[1,4,6],0.25);
 disp('Trajectory:');
-disp(Problem2_3b(PiNot,[1,4,6],0.25));
-legend('Path','Input','Target');
+disp(path5b)
 title('Problem2.5(b)');
 
 %2.5(c)
 disp('2.5(c): If we increase Pe error, the robot would be much likely have new path and longer.'); 
-disp('Additional, if we try to make the robot facing down. The robot more likely have longer path.');
+disp('Additional, if we try to make the robot facing down. The robot more likely have longer path, and some time will hit the wall');
 
 

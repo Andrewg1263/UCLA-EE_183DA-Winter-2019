@@ -4,7 +4,7 @@ PiV=PiV-10^100;
 for x=0:5 %X
     for y=0:5 %Y
         for h=0:11 %H
-            for a=["leftforward","forward","rightforward","leftbackward","backward","righbackward"]
+            for a=["FL","F","FR","BL","B","BR"]
                 temp=0;
                 for x1=0:5 %X'
                     for y1=0:5 %Y'
@@ -21,5 +21,5 @@ for x=0:5 %X
         end
     end
 end
-Pi(4,5,:)="standby";
+Pi(4,5,:)="N";
 end

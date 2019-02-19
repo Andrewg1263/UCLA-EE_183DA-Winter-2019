@@ -1,42 +1,44 @@
-function [PiStar,VStar] = Problem2_4a(Lambda,pe)
-tempv=zeros(6,6,12); 
-check=true; 
+function [value1,value2] = Problem2_4a(Lambda,pe)
+
+v1=zeros(6,6,12); %Initialize all values to 0
+check=true; %loop until condition
 Policy=strings(6,6,12);
 while check
     Policy=strings(6,6,12);
-    for x=0:5 
-        for y=0:5 %y
-            for h=0:11 %h
-                c=-10^100;
-                for a=["leftforward","forward","rightforward","leftbackward","backward","righbackward"] 
+    for i=0:5 %x
+        for j=0:5 %y
+            for k=0:11 %h
+                c=-10^100; %dummy value of negative infinity to compare against
+                for a=["FL","F","FR","BL","B","BR"] %consider all moves
                     b=0;
-                    for x1=0:5 %x'
-                        for y1=0:5 %y'
-                            for h1=0:11 %h'
-                                b=b+Problem2_1c(pe,[x,y,h],a,[x1,y1,h1])*(Problem2_2a([x,y,h])+Lambda*tempv(x1+1,y1+1,h1+1));
+                    for l=0:5 %x'
+                        for m=0:5 %y'
+                            for n=0:11 %h'
+                                b=b+Problem2_1c(pe,[i,j,k],a,[l,m,n])*(Problem2_2a([i,j,k])+Lambda*v1(l+1,m+1,n+1));
                             end
                         end
                     end
                     if b>c
                         c=b;
-                        Vupdate(x+1,y+1,h+1)=c;
-                        Policy(x+1,y+1,h+1)=a;
+                        vupdate(i+1,j+1,k+1)=c;
+                        Policy(i+1,j+1,k+1)=a;
                     end
-                    if sum([x,y]==[4,4])==2 
-                        Vupdate(x+1,y+1,h+1)=Problem2_1c(pe,[x,y,h],"N",[x,y,h])*(Problem2_2a([x,y,h])+Lambda*tempv(x+1,y+1,h+1));
-                        Policy(x+1,y+1,h+1)="N";
+                    if sum([i,j]==[4,4])==2 %Set the action for the goal to be no move, and update value
+                        vupdate(i+1,j+1,k+1)=Problem2_1c(pe,[i,j,k],"N",[i,j,k])*(Problem2_2a([i,j,k])+Lambda*v1(i+1,j+1,k+1));
+                        Policy(i+1,j+1,k+1)="N";
                     end
                 end
             end
         end
     end
-    if sum(sum(sum(abs(tempv-Vupdate)<0.0001)))==432 
-        check=false; 
-        PiStar=Policy;
-        VStar=Vupdate;
+    if sum(sum(sum(abs(v1-vupdate)<0.0001)))<1 %if V has converged
+        check=false; %stop looping
+        value1=Policy;
+        value2=vupdate;
     end
-  
-    tempv=Vupdate;
+    
+    v1=vupdate;
 end
 
 end
+
